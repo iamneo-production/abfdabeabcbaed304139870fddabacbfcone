@@ -26,28 +26,28 @@ const ColorMatcher = () => {
   const [gameWon, setGameWon] = useState(false); // Added state for game won
 
   const handleColorSelection = (selectedColor) => {
-    if (!gameOver && !gameWon) { // Check for game over and game won conditions
-      if (timerActive && selectedColor.name === currentColor.name) {
-        setScore(score + 1);
-      } else {
-        setScore(score - 1);
-      }
-      setTimerActive(false);
-      setCurrentColor(getRandomColor());
-    }
+    // if (!gameOver && !gameWon) { // Check for game over and game won conditions
+    //   if (timerActive && selectedColor.name === currentColor.name) {
+    //     setScore(score + 1);
+    //   } else {
+    //     setScore(score - 1);
+    //   }
+    //   setTimerActive(false);
+    //   setCurrentColor(getRandomColor());
+    // }
   };
 
   useEffect(() => {
-    if (timeLeft > 0 && timerActive) {
-      const timer = setTimeout(() => {
-        setTimeLeft(timeLeft - 1);
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-    if (timeLeft === 0 && !gameWon) { // Display game over only if not won
-      setTimerActive(false);
-      setGameOver(true);
-    }
+    // if (timeLeft > 0 && timerActive) {
+    //   const timer = setTimeout(() => {
+    //     setTimeLeft(timeLeft - 1);
+    //   }, 1000);
+    //   return () => clearTimeout(timer);
+    // }
+    // if (timeLeft === 0 && !gameWon) { // Display game over only if not won
+    //   setTimerActive(false);
+    //   setGameOver(true);
+    // }
   }, [timeLeft, timerActive, gameWon]);
 
   useEffect(() => {
