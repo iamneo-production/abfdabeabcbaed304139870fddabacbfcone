@@ -13,8 +13,7 @@ export const colors = [
 ];
 
 const getRandomColor = () => {
-  {/* Write a  function that returns a random color from the colors array */}
-  
+  const randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex];
 };
 
@@ -24,46 +23,39 @@ const ColorMatcher = () => {
   const [timeLeft, setTimeLeft] = useState(5);
   const [timerActive, setTimerActive] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [gameWon, setGameWon] = useState(false);
+  const [gameWon, setGameWon] = useState(false); // Added state for game won
 
   const handleColorSelection = (selectedColor) => {
-    {/* Write a function that updates the score based on the selected color
-     Check if the game is not over and not won yet
-   
-       Check if the timer is active and if the selected color matches the current color
-     
-         Increment the score by 1 if the selected color is correct
-       
-         Decrement the score by 1 if the selected color is incorrect
-       
-       Deactivate the timer
-     
-    Set a new random color as the current color */}
+    if (!gameOver && !gameWon) { // Check for game over and game won conditions
+      if (timerActive && selectedColor.name === currentColor.name) {
+        setScore(score + 1);
+      } else {
+        setScore(score - 1);
+      }
+      setTimerActive(false);
+      setCurrentColor(getRandomColor());
+    }
   };
 
   useEffect(() => {
     if (timeLeft > 0 && timerActive) {
       const timer = setTimeout(() => {
-
-        {/* Write a Code to decrease the time left by 1 second */}
-        
+        setTimeLeft(timeLeft - 1);
       }, 1000);
       return () => clearTimeout(timer);
     }
-    {/* Check if the time has reached 0 and the game is not won */}
-
-      {/* Deactivate the timer and set the game as over */}
-      
+    if (timeLeft === 0 && !gameWon) { // Display game over only if not won
+      setTimerActive(false);
+      setGameOver(true);
     }
   }, [timeLeft, timerActive, gameWon]);
 
   useEffect(() => {
-   {/* }Write a Code to Check if the game is not over, not won, and the timer is not active */}
-   
-     {/* Write a Code to Activate the timer and set the initial time left */} 
-   
-  }
-    if (score >= 10 && !gameOver && !gameWon) { 
+    if (!gameOver && !gameWon && !timerActive) { // Start timer only if not over or won
+      setTimerActive(true);
+      setTimeLeft(5);
+    }
+    if (score >= 10 && !gameOver && !gameWon) { // Set game won state
       setGameWon(true);
       setTimerActive(false);
     }
@@ -71,27 +63,14 @@ const ColorMatcher = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-      {/* Add title as "Color Matcher Game" using h1 */}
-    
+      <h1>Color Matcher Game</h1>
       {gameOver ? (
-
-        {/* Write a paragraph element that displays the "Game Over! You lost!" message when the game is over */}
-          {/* Set the data-testid attribute to "lost-message" for testing */}
-          {/* Apply inline styles to change the text color to red and set font size to 24 pixels */}
-        {/* Display the message "Game Over! You lost!" */}
-
+        <p data-testid="lost-message" style={{ color: 'red', fontSize: '24px' }}>Game Over! You lost!</p>
       ) : (
         <>
-           
-          {/* Write a paragraph element that displays the remaining time */}
-            {/* Set the data-testid attribute to "time-left" */}
-            {/* Display the text "Time left: " followed by the value of the "timeLeft" variable */}
-
-          {/* Write a paragraph element that displays the player's score */}
-            {/* Set the data-testid attribute to "score" */}
-            {/* Display the text "Score: " followed by the value of the "score" variable */}
-
-            <div
+          <p data-testid="time-left">Time left: {timeLeft} seconds</p>
+          <p data-testid="score">Score: {score}</p>
+          <div
             data-testid="color-square"
             style={{
               width: '200px',
@@ -100,7 +79,7 @@ const ColorMatcher = () => {
               borderRadius: '50%',
             }}
           />
-        
+          {/* <h2>Color: {currentColor.name}</h2> */}
           <div>
             {colors.map((color) => (
               <button
@@ -118,10 +97,7 @@ const ColorMatcher = () => {
             ))}
           </div>
           {gameWon && (
-            {/* Write a paragraph element that displays the "You won!" message when the game is won */}
-              {/* Set the data-testid attribute to "win-message"  */}
-                 {/* Apply inline styles to change the text color to green and set font size to 24 pixels */}
-            {/* Display the message "You won!" */}
+            <p data-testid="win-message" style={{ color: 'green', fontSize: '24px' }}>You won!</p>
           )}
         </>
       )}
